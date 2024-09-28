@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل دخول</title>
+</head>
+<body>
+    <h1>تسجيل دخول</h1>
+    <form id="loginForm">
+        <label for="password">أدخل الكود:</label><br><br>
+        <input type="text" id="password" name="password" required><br><br>
+        <button type="button" onclick="login()">تسجيل دخول</button>
+    </form>
+
+    <script>
+        function login() {
+            const enteredCode = document.getElementById("password").value;
+
+            // جلب الأكواد من السيرفر والتحقق من الكود المدخل
+            fetch('/codes')
+                .then(response => response.json())
+                .then(codes => {
+                    if (codes.includes(enteredCode)) {
+                        alert("تم تسجيل الدخول بنجاح!");
+                        window.location.href = "/success.html"; // يمكنك توجيه المستخدم لصفحة النجاح
+                    } else {
+                        alert("الكود غير صحيح!");
+                    }
+                });
+        }
+
+        // إضافة حدث عند لصق الكود في حقل الإدخال
+        document.getElementById("password").addEventListener("paste", function() {
+            setTimeout(login, 100); // تأخير بسيط للتحقق بعد اللصق
+        });
+    </script>
+</body>
+</html>
